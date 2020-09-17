@@ -1,0 +1,151 @@
+{% load static %}
+
+{% include 'inc/head.inc.html' %}
+
+
+<body>
+
+  <!-- ======= Header ======= -->
+ 
+  <!-- End Header -->
+
+
+
+  <main id="main mt-0">
+
+    <section id="contact" class="contact">
+        <div class="container">
+        
+            <div style="text-align: center;">
+                <a href="">
+                    <img src="{% static 'assets/img/logo.png' %}" style="margin: auto; width: 100px; height: 70px;" alt="">
+
+                </a>
+
+
+            </div>
+
+  
+          <div class="section-title mt-3" data-aos="fade-up">
+            <h2 style="display: none;">Welcome here</h2>
+            <p style="font-size: medium;">Welcome, signup here!</p>
+          </div>
+  
+          <div class="row">
+
+            <div class="col-sm-3">
+
+            </div>
+  
+           
+  
+            <div class="col-lg-6 mt-5 mt-lg-0 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+              <form action="register" method="post" role="form" class="php-email-form" id="signup_form">
+                {% csrf_token %}
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Enter your first Name</label>
+                    <input type="text" name="name" class="form-control" value="{{name}}" data-rule="minlen:4" data-msg="Please enter at least 4 chars" required />
+                    <div class="validate"></div>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="name">Enter your last Name</label>
+                    <input type="text" name="l_name" class="form-control" value="{{l_name}}" data-rule="minlen:4" data-msg="Please enter at least 4 chars" required />
+                    <div class="validate"></div>
+                  </div>
+                  
+                </div>
+                <div class="form-group">
+                  <label for="name">Enter Your Email</label>
+                  <input type="email" class="form-control" name="email" value="{{email}}" id="email" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" required />
+                  <div class="validate"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Enter Password</label>
+                    <input type="password" class="form-control" name="pass1" value="{{pass1}}" id="p1" data-rule="minlen:4" data-msg="Please enter at least 8 chars of password" required/>
+                    <div class="validate"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Confirm Password</label>
+                    <input type="password" class="form-control" name="pass2" id="p2" value="{{pass2}}" data-rule="minlen:4" data-msg="Please enter at least 8 chars of password" required />
+                    <div class="validate"></div>
+                </div>
+
+                <div class="custom-control custom-checkbox-green mb-3">
+                  <input type="checkbox" class="custom-control-input custom-control-input-green" style="border-radius: 100%;" id="customCheck">
+                  <label class="custom-control-label" for="customCheck">I agree with your all mentioned <a href="">privay & policy</a></label>
+                </div>
+                
+                <div class="mb-3">
+                  <p class="text-danger" id="error_msg">
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+                  </p>
+                  
+                </div>
+                <div class="text-center"><button class="btn-block" type="submit">Register Now</button></div>
+                <p class="text-center my-3">Already registered ?</p>
+                <div class="text-center"><a href="login"><button  style="padding: 10px 15px;" class="btn btn-secondary btn-block bg-secondary" type="button">Login Here</button></a></div>
+
+              </form>
+            </div>
+
+            <div class="col-sm-3">
+
+            </div>
+  
+          </div>
+  
+        </div>
+      </section>
+
+
+  </main>
+  <!-- End #main -->
+
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  {% include 'inc/bottom.inc.html' %}
+
+  <script>
+    var error_msg = "{{border}}";
+
+    if (error_msg != "") {
+      console.log(error_msg);
+
+      if (error_msg == "password") {
+          $("#p1").css('border', 'solid 1px red');
+          $("#p2").css('border', 'solid 1px red');
+      }
+
+      if (error_msg == "email") {
+          $("#email").css('border', 'solid 1px red');
+      }
+    }
+
+    $("#signup_form").submit(function(){
+
+        var agreement = $('#customCheck').is(":checked");
+        console.log(agreement);
+
+        if (agreement) {
+            return true
+
+        }else{
+            $("#error_msg").text("Kindly read and agree to our privacy policy!");
+            return false;
+        }
+
+
+    });
+  </script>
+
+
+</body>
+
+</html>

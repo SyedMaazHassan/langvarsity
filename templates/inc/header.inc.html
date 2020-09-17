@@ -1,0 +1,47 @@
+  {% load static %}
+  
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top" style="height: fit-content;">
+    <div class="container d-flex">
+
+      <div class="mr-auto">
+        <h1 class="text-light">
+          <a href="">
+            <img src="{% static 'assets/img/logo.png' %}" style="width: 100px; height: 70px;" alt="">
+          </a>
+        </h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+      </div>
+
+      <nav class="nav-menu d-none d-lg-block mt-3">
+        <ul>
+          <!-- <li class="active"><a href="index.htm">Home</a></li> -->
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#samples">Samples</a></li>
+          <li><a href="#services">How it works</a></li>
+          <li><a href="#clients">Testimonials</a></li>
+          <li><a href="#faq">FAQs</a></li>
+
+          <li><a href="#contact">Contact Us</a></li>
+
+          {% if user.is_authenticated %}
+            <li><a href="logout">Logout</a></li>
+
+            <li>
+              <a href="profile">
+                <i class="material-icons">person</i>
+              </a>
+            </li>
+
+
+          {% else %}
+            <li><a href="login">Login</a></li>
+            <li class="get-started"><a href="register" class="orange-outline">Register now</a></li>
+    
+          {% endif %}
+      </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header>
+  <!-- End Header -->

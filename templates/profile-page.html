@@ -1,0 +1,201 @@
+{% load static %}
+
+{% include 'inc/head.inc.html' %}
+
+<body>
+
+  
+
+
+
+  {% include 'inc/header.inc.html' %}
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="" style="box-shadow:5px 5px 10px #eeeeee;">
+      <div class="container">
+          
+        <!-- Modal -->
+          <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Become native speaker now</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  <form action="" method="post">
+                    <div>
+                      <div class="p-2">
+                        <h6><b>Attach your G-passport</b></h6>
+
+                        <div class="my-1" style="border: solid 1px grey; padding:10px; border-radius: 5px;">
+                          <input  type="file" name="" id="">
+                        </div>
+
+                      </div>
+               
+                      
+                      <table class="table p-0 table-borderless">
+                        <thead>
+                          <tr>
+                            <th style="width: 50%;">Organization</th>
+                            <th style="width: 20%;">Years</th>
+                            <th style="width: 30%;">Type</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <input class="form-control" type="text" name="" placeholder="Organization" id="">
+                            </td>
+                            <td>
+                              <input class="form-control" type="number" min="1" max="20" value="1" name="" id="">
+                            </td>
+                            <td>
+                              <div class="form-group">
+                                <select class="form-control" name="" id="">
+                                  <option>Full time</option>
+                                  <option>Part time</option>
+                                  <option>Freelancing</option>
+                                </select>
+                              </div>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <input class="form-control" type="text" name="" placeholder="Organization" id="">
+                            </td>
+                            <td>
+                              <input class="form-control" type="number" min="1" max="20" value="1" name="" id="">
+                            </td>
+                            <td>
+                              <div class="form-group">
+                                <select class="form-control" name="" id="">
+                                  <option>Full time</option>
+                                  <option>Part time</option>
+                                  <option>Freelancing</option>
+                                </select>
+                              </div>
+                            </td>
+                          </tr>
+
+                         
+
+                          <tr>
+                            <td colspan="3" class="text-center">
+                              <button type="button" class="btn btn-orange p-0" title="Add new experience">
+                                <i class="material-icons p-0 pt-1 px-1">keyboard_arrow_down</i>
+
+                              </button>
+                            </td>
+                          </tr>
+                          
+                        </tbody>
+                      </table>
+
+                      <p class="m-0 px-2 text-success">At least experience of 1 Organization is must!</p>
+
+
+                    </div>
+                  </form>
+              
+                </div>
+                <div class="modal-footer px-4">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-orange" style="padding:6px 10px">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="row my-5">
+          <div class="col-lg-4 d-flex align-items-center justify-content-center about-img">
+            <div class="border-do text-center">
+                <img src="{% static 'assets/img/profile.png' %}" class="my-2" style="width: 80px; height: 80px; opacity: 0.5;" alt="">
+                <div class="mt-4">
+                    <div class="row my-2">
+                        <div class="col-4 text-left justify-content-left">
+                            <p class="text-dark"><b>Name</b></p>
+                        </div>
+
+                        <div class="col-8 d-flex justify-content-left align-items-center px-0">
+                            <p>{{user.first_name}} {{user.last_name}}</p>
+                        </div>
+                    </div>
+
+
+                    <div class="row my-2">
+                        <div class="col-4 text-left justify-content-left">
+                            <p class="text-dark"><b>Email</b></p>
+                        </div>
+
+                        <div class="col-8 d-flex justify-content-left align-items-center px-0">
+                            <p>{{user.username}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-4 text-left justify-content-left">
+                            <p class="text-dark"><b>Join date</b></p>
+                        </div>
+
+                        <div class="col-8 d-flex justify-content-left align-items-center px-0">
+                            <p>{{date_joined}}</p>
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                      <div class="col-4 text-left justify-content-left">
+                          <p class="text-dark"><b>Last order</b></p>
+                      </div>
+
+                      <div class="col-8 d-flex justify-content-left align-items-center px-0">
+                          <p>None</p>
+                      </div>
+                    </div>
+
+                    <button type="button" name="" id="" class="btn btn-orange btn-block">Upload new work</button>
+                    
+                    <p class="my-3">OR</p>
+                    <button type="button" name="" id="" data-toggle="modal" data-target="#modelId" class="btn btn-secondary btn-block" style="padding: 10px 15px;">Become native speaker</button>
+
+                  </div>
+            </div>
+            
+          </div>
+
+          <div class="col-lg-8 pt-5 pt-lg-0">
+            
+              <!-- Button trigger modal -->
+              <h2>Your past work</h2>
+              <h5 class="my-4">No past work to show yet!</h5>
+  
+              
+             
+           
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- End About Section -->
+
+  </main>
+  <!-- End #main -->
+
+
+  {% include 'inc/footer.inc.html' %}
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  {% include 'inc/bottom.inc.html' %}
+
+
+</body>
+
+</html>

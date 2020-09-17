@@ -1,0 +1,97 @@
+{% load static %}
+
+{% include 'inc/head.inc.html' %}
+
+<body>
+
+  <!-- ======= Header ======= -->
+ 
+  <!-- End Header -->
+
+
+
+  <main id="main mt-5">
+
+    <section id="contact" class="contact">
+        <div class="container">
+        
+            <div style="text-align: center;">
+                <a href="">
+                    <img src="{% static 'assets/img/logo.png' %}" style="margin: auto; width: 100px; height: 70px;" alt="">
+
+                </a>
+
+
+            </div>
+
+  
+          <div class="section-title mt-3" data-aos="fade-up">
+            <h2 style="display: none;">Contact Us</h2>
+            <p>Login Here!</p>
+          </div>
+  
+          <div class="row">
+
+            <div class="col-sm-4">
+
+            </div>
+  
+           
+  
+            <div class="col-lg-4 mt-5 mt-lg-0 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+              <form action="login" method="post" role="form" class="php-email-form">
+                {% csrf_token %}
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label for="name">Enter your Email</label>
+                    <input type="email" name="email" value="{{email}}" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                    <div class="validate"></div>
+                  </div>
+                  
+                </div>
+                <div class="form-group">
+                  <label for="name">Enter password</label>
+                  <input type="password" class="form-control" value="{{password}}" name="password" id="subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                  <div class="validate"></div>
+                </div>
+
+                <p class="text-danger" id="error_msg">
+                  {% for message in messages %}
+                      {{message}}
+                  {% endfor %}
+                </p>
+                
+                
+                <div class="text-center"><button class="btn-block" type="submit">Login Now</button></div>
+                <p class="text-center my-3">Never registered before ?</p>
+                <div class="text-center">
+                    <a href="register">
+                        <button class="btn btn-secondary btn-block bg-secondary"  style="padding: 10px 15px;" type="button">Register Here</button>
+
+                    </a>
+                </div>
+
+              </form>
+            </div>
+
+            <div class="col-sm-4">
+
+            </div>
+  
+          </div>
+  
+        </div>
+      </section>
+
+
+  </main>
+  <!-- End #main -->
+
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  {% include 'inc/bottom.inc.html' %}
+
+</body>
+
+</html>
