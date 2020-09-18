@@ -26,89 +26,135 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                  <form action="" method="post">
-                    <div>
-                      <div class="p-2">
-                        <h6><b>Attach your G-passport</b></h6>
+                <form action="{% url 'becomenative' %}" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="modal-body">
+                      <div>
+                        <div class="p-2">
+                          <h6 class="mb-4"><b>Attach your G-passport</b></h6>
 
-                        <div class="my-1" style="border: solid 1px grey; padding:10px; border-radius: 5px;">
-                          <input  type="file" name="" id="">
+                          <div class="my-1" style="border: solid 1px grey; padding:10px; border-radius: 5px;">
+                            <input  type="file" name="doc" id="doc" required>
+                          </div>
+
                         </div>
+                
+                        
+                        <table class="table p-0 table-borderless">
+                          <thead>
+                            <tr>
+                              <th style="width: 50%;">Organization</th>
+                              <th style="width: 20%;">Years</th>
+                              <th style="width: 30%;">Type</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+
+                            <tr class="my-0" id="line_1">
+                              <td>
+                                <input class="form-control" type="text" name="org_1" placeholder="Organization 1" id="org_1" required>
+                              </td>
+                              <td>
+                                <input class="form-control" type="number" min="1" max="20" value="1" name="year_1" id="year_1" required>
+                              </td>
+                              <td>
+                                <div class="form-group">
+                                  <select class="form-control" name="type_1" id="type_1" required>
+                                    <option value="">Select</option>
+                                    <option value="Full time">Full time</option>
+                                    <option value="Part time">Part time</option>
+                                    <option value="Freelancing">Freelancing</option>
+                                  </select>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr class="my-0" id="line_2" style="display: none;">
+                              <td>
+                                <input class="form-control" type="text" name="org_2" placeholder="Organization 2" id="org_2">
+                              </td>
+                              <td>
+                                <input class="form-control" type="number" min="1" max="20" value="1" name="year_2" id="year_2">
+                              </td>
+                              <td>
+                                <div class="form-group">
+                                  <select class="form-control" name="type_2" id="type_2">
+                                    <option value="">Select</option>
+                                    <option value="Full time">Full time</option>
+                                    <option value="Part time">Part time</option>
+                                    <option value="Freelancing">Freelancing</option>
+                                  </select>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr class="my-0" id="line_3" style="display: none;">
+                              <td>
+                                <input class="form-control" type="text" name="org_3" placeholder="Organization 3" id="org_3">
+                              </td>
+                              <td>
+                                <input class="form-control" type="number" min="1" max="20" value="1" name="year_3" id="year_3">
+                              </td>
+                              <td>
+                                <div class="form-group">
+                                  <select class="form-control" name="type_3" id="type_3">
+                                    <option value="">Select</option>
+                                    <option value="Full time">Full time</option>
+                                    <option value="Part time">Part time</option>
+                                    <option value="Freelancing">Freelancing</option>
+                                  </select>
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr class="my-0" id="line_4" style="display: none;">
+                              <td>
+                                <input class="form-control" type="text" name="org_4" placeholder="Organization 4" id="org_4">
+                              </td>
+                              <td>
+                                <input class="form-control" type="number" min="1" max="20" value="1" name="year_4" id="year_4">
+                              </td>
+                              <td>
+                                <div class="form-group">
+                                  <select class="form-control" name="type_4" id="type_4">
+                                    <option value="">Select</option>
+                                    <option value="Full time">Full time</option>
+                                    <option value="Part time">Part time</option>
+                                    <option value="Freelancing">Freelancing</option>
+                                  </select>
+                                </div>
+                              </td>
+                            </tr>
+
+
+
+                          
+
+                            <tr>
+                              <td colspan="3" class="text-center">
+                                <button type="button" class="btn btn-orange p-0" onclick="show_next_line()" title="Add new experience">
+                                  <i class="material-icons p-0 pt-1 px-1">keyboard_arrow_down</i>
+
+                                </button>
+                              </td>
+                            </tr>
+                            
+                          </tbody>
+                        </table>
+
+                        <p class="m-0 px-2 text-danger" id="error_msg"></p>
+
 
                       </div>
-               
-                      
-                      <table class="table p-0 table-borderless">
-                        <thead>
-                          <tr>
-                            <th style="width: 50%;">Organization</th>
-                            <th style="width: 20%;">Years</th>
-                            <th style="width: 30%;">Type</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <input class="form-control" type="text" name="" placeholder="Organization" id="">
-                            </td>
-                            <td>
-                              <input class="form-control" type="number" min="1" max="20" value="1" name="" id="">
-                            </td>
-                            <td>
-                              <div class="form-group">
-                                <select class="form-control" name="" id="">
-                                  <option>Full time</option>
-                                  <option>Part time</option>
-                                  <option>Freelancing</option>
-                                </select>
-                              </div>
-                            </td>
-                          </tr>
+                
+                  </div>
 
-                          <tr>
-                            <td>
-                              <input class="form-control" type="text" name="" placeholder="Organization" id="">
-                            </td>
-                            <td>
-                              <input class="form-control" type="number" min="1" max="20" value="1" name="" id="">
-                            </td>
-                            <td>
-                              <div class="form-group">
-                                <select class="form-control" name="" id="">
-                                  <option>Full time</option>
-                                  <option>Part time</option>
-                                  <option>Freelancing</option>
-                                </select>
-                              </div>
-                            </td>
-                          </tr>
-
-                         
-
-                          <tr>
-                            <td colspan="3" class="text-center">
-                              <button type="button" class="btn btn-orange p-0" title="Add new experience">
-                                <i class="material-icons p-0 pt-1 px-1">keyboard_arrow_down</i>
-
-                              </button>
-                            </td>
-                          </tr>
-                          
-                        </tbody>
-                      </table>
-
-                      <p class="m-0 px-2 text-success">At least experience of 1 Organization is must!</p>
-
-
-                    </div>
-                  </form>
-              
-                </div>
-                <div class="modal-footer px-4">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-orange" style="padding:6px 10px">Submit</button>
-                </div>
+                  <div class="modal-footer px-4">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-orange" style="padding:6px 10px">Submit</button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -161,9 +207,16 @@
 
                     <button type="button" name="" id="" class="btn btn-orange btn-block">Upload new work</button>
                     
+                    
+
+                    {% if status %}
+                    <button type="button" name="" id="" class="btn btn-secondary btn-block" style="padding: 10px 10px; margin-top: 15px;" disabled>{{status}}</button>
+
+                    {% else %}
                     <p class="my-3">OR</p>
                     <button type="button" name="" id="" data-toggle="modal" data-target="#modelId" class="btn btn-secondary btn-block" style="padding: 10px 15px;">Become native speaker</button>
-
+                    {% endif %}
+                  
                   </div>
             </div>
             
@@ -197,5 +250,46 @@
 
 
 </body>
+
+<script>
+  var current_status = 1;
+  function show_next_line() {
+
+      if (current_status < 4) {
+          $("#error_msg").text("");
+
+          var current_org = $(`#org_${current_status}`).val();
+          var current_year = $(`#year_${current_status}`).val();
+          var current_type = $(`#type_${current_status}`).val();
+
+          if (current_org == "" || current_year == "" || current_type == "" ) {
+              $("#error_msg").text("Kindly fill the given fields to add new one!");
+          }else{
+              $("#error_msg").text("");
+
+              console.log(current_org);
+              console.log(current_year);
+              console.log(current_type);
+
+              // expand new line
+              current_status += 1;
+
+              $(`#line_${current_status}`).css('display', '')
+
+          }
+
+          
+      }else{
+
+        $("#error_msg").text("You can add maximum 4 experiences right now!");
+
+
+      }
+
+  }
+</script>
+
+
+
 
 </html>

@@ -13,16 +13,87 @@ def index(request):
     #     return redirect("login")
     return render(request, 'index.html')
 
+def becomenative(request):
+    if request.method == 'POST':
+        myFile = request.FILES['doc']
+
+        org_1 = request.POST['org_1']
+        year_1 = request.POST['year_1']
+        type_1 = request.POST['type_1']
+
+        org_2 = request.POST['org_2']
+        year_2 = request.POST['year_2']
+        type_2 = request.POST['type_2']
+
+        org_3 = request.POST['org_3']
+        year_3 = request.POST['year_3']
+        type_3 = request.POST['type_3']
+
+        org_4 = request.POST['org_4']
+        year_4 = request.POST['year_4']
+        type_4 = request.POST['type_4']
+
+        print('org_1', org_1)
+        print('year_1', year_1)
+        print('type_1', type_1)
+        print()
+        print('org_2', org_2)
+        print('year_2', year_2)
+        print('type_2', type_2)
+        print()
+        print('org_3', org_3)
+        print('year_3', year_3)
+        print('type_3', type_3)
+        print()
+        print('org_4', org_4)
+        print('year_4', year_4)
+        print('type_4', type_4)
+
+        new_native = native_speaker(
+            which_user = request.user,
+            g_passport = myFile,
+            org_1 = org_1,
+            year_1 = year_1,
+            type_1 = type_1,
+            org_2 = org_2,
+            year_2 = year_2,
+            type_2 = type_2,
+            org_3 = org_3,
+            year_3 = year_3,
+            type_3 = type_3,
+            org_4 = org_4,
+            year_4 = year_4,
+            type_4 = type_4,
+        )
+
+        new_native.save()
+
+
+    return redirect("profile")
+
+
 
 # main page
 def profile(request):
     if not request.user.is_authenticated:
         return redirect("index")
 
-    date_joined = request.user.date_joined.date()
+    context = {
+        'date_joined': request.user.date_joined.date(),
+    }
+
+    if native_speaker.objects.filter(which_user = request.user).exists():
+        if native_speaker.objects.get(which_user = request.user).isAccepted:
+            context['status'] = "You are now a native speaker"
+        else:
+            context['status'] = "Native speaker request has been sent"
+
+
+
+
     # print(date_joined)
 
-    return render(request, 'profile-page.html', {'date_joined': date_joined})
+    return render(request, 'profile-page.html', context)
 
 
 # function for signup
