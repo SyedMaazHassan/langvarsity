@@ -186,6 +186,9 @@ h1, h2, h3, h4, h5, h6, .font-primary {
   border-radius: 100%;
 }
 
+.just{
+  text-align: justify;
+}
 
 .corrected{
   color: #eb5d1e;
@@ -194,6 +197,22 @@ h1, h2, h3, h4, h5, h6, .font-primary {
 .btn-orange{
   background-color: #eb5d1e;
   color: white;
+  padding: 10px 15px;
+  transition-duration: 0.25s;
+}
+
+.btn-outline-orange{
+  background-color: white;
+  color: #eb5d1e;
+  border: solid 1px #eb5d1e;
+  padding: 10px 15px;
+  transition-duration: 0.25s;
+}
+
+.btn-outline-orange:hover{
+  background-color: #eb5d1e;
+  color: white;
+  border: solid 1px #eb5d1e;
   padding: 10px 15px;
   transition-duration: 0.25s;
 }

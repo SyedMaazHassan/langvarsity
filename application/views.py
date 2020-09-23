@@ -13,6 +13,9 @@ def index(request):
     #     return redirect("login")
     return render(request, 'index.html')
 
+def documents(request):
+    return render(request, 'privacy.html')
+
 def becomenative(request):
     if request.method == 'POST':
         myFile = request.FILES['doc']
