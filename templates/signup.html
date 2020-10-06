@@ -56,11 +56,25 @@
                   </div>
                   
                 </div>
-                <div class="form-group">
-                  <label for="name">Enter Your Email</label>
-                  <input type="email" class="form-control" name="email" value="{{email}}" id="email" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" required />
-                  <div class="validate"></div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Enter Your Email</label>
+                    <input type="email" class="form-control" name="email" value="{{email}}" id="email" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" required />
+                    <div class="validate"></div>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="name">Enter your birthdate</label>
+                    <input type="date" name="birth" class="form-control" required />
+                    <div class="validate"></div>
+                  </div>
+                  
                 </div>
+
+
+
+          
 
                 <div class="form-group">
                     <label for="name">Enter Password</label>

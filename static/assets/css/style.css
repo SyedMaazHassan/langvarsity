@@ -8,6 +8,24 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+.decrease-s-width::-webkit-scrollbar{
+  width: 5px;
+}
+
+
+.dropzone{
+  border: solid 2px #cccccc; 
+  border-radius: 5px; 
+  border-style: dashed;
+  transition-duration: 0.25s;
+}
+
+.dragover{
+  border-color: grey;
+  background-color: #f4f4f4;
+  transition-duration: 0.25s;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   color: #212529;
@@ -35,6 +53,17 @@ body {
 .step-icons{
   width: 70px; 
   height: 70px;
+}
+
+.step-icons-upload{
+  width: 60px;
+  height: 60px;
+}
+
+.description-upload{
+  color: grey;
+  font-size: 15px;
+  margin: 10px 0px;
 }
 
 .orange-outline{
@@ -162,8 +191,50 @@ h1, h2, h3, h4, h5, h6, .font-primary {
   text-decoration: none;
 }
 
+.native-profile{
+  transition-duration: 0.25s;
+}
+
+.native-profile:hover{
+  background-color: #f7f7f7;
+  transition-duration: 0.25s;
+}
+
+.card-d{
+  font-size:15px; 
+  text-align: center; 
+  border-radius: 2px; 
+  color: #ffffff;
+}
+
 .pri-color{
   color: #eb5d1e;
+}
+
+.star, .checked {
+  font-size: 21px;
+  margin: 0px;
+  color: #8c9196;
+  float: left;
+}
+
+.checked {
+  color: #f4c80f;
+}
+
+.elements {
+  display: inline-block;
+}
+
+.card-shade{
+  border-color: #cccccc;
+  transition-duration: 0.25s;
+}
+
+.card-shade:hover{
+  transition-duration: 0.25s;
+  border-color: #cccccc;
+  box-shadow:5px 5px 10px #cccccc;
 }
 
 .nav-menu .get-started a {
@@ -195,7 +266,7 @@ h1, h2, h3, h4, h5, h6, .font-primary {
 }
 
 .btn-orange{
-  background-color: #eb5d1e;
+  background-color: #fb804b;
   color: white;
   padding: 10px 15px;
   transition-duration: 0.25s;

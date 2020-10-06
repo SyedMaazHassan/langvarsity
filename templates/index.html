@@ -337,7 +337,21 @@
 
         </div>
 
-        <button type="button" class="btn btn-orange" style="margin: auto;">Upload your text now</button>
+
+        {% if user.is_authenticated %}
+
+          <a href="upload-work">
+            <button type="button" class="btn btn-orange" style="margin: auto;">Upload your text now</button>
+          </a>
+        
+        {% else %}
+
+          <a href="login?continue=upload-work">
+            <button type="button" class="btn btn-orange" style="margin: auto;">Upload your text now</button>
+          </a>
+
+        {% endif %}
+
 
       </div>
     </section>

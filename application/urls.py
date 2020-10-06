@@ -11,7 +11,9 @@ urlpatterns = [
     path('logout', views.logout, name="logout"),
     path('profile', views.profile, name="profile"),
     path('becomenative', views.becomenative, name="becomenative"),
-    path('documents', views.documents, name="documents")
+    path('documents', views.documents, name="documents"),
+    path('upload-work', views.upload_work, name="upload-work"),
+    path('submitwork', views.submitwork, name="submitwork")
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

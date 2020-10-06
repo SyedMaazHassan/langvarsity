@@ -28,3 +28,4 @@ class native_show(admin.ModelAdmin):
 
 
 admin.site.register(native_speaker, native_show)
+admin.site.register(order)

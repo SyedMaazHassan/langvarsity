@@ -1,0 +1,424 @@
+{% load static %}
+
+{% include 'inc/head.inc.html' %}
+
+<body>
+
+  
+
+
+
+  {% include 'inc/header.inc.html' %}
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="" style="box-shadow:5px 5px 10px #eeeeee;">
+      <div class="container">
+          
+    
+
+        <div class="row my-5">
+
+        
+
+          <div class="col-lg-8 about-img pr-5">
+
+            <form action="submitwork" id="work-form" method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+
+                <h2>Proofreading</h2>
+                <p class="my-3" style="color: grey; font-size:20px">Please select what kind of your text is</p>
+                <input type="hidden" name="category" id="category">
+
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-orange mr-3 cat-btns" onclick="enter_category(this, 'Academic tests')">Academic tests</button>
+                    <button type="button" class="btn btn-outline-orange mr-3 cat-btns" onclick="enter_category(this, 'Social media')">Social media</button>
+                    <button type="button" class="btn btn-outline-orange mr-3 cat-btns" onclick="enter_category(this, 'Email / Letters')">Email / Letters</button>
+                    <button type="button" class="btn btn-outline-orange mr-3 cat-btns" onclick="enter_category(this, 'CV / Resume')">CV / Resume</button>
+                    <button type="button" class="btn btn-outline-orange mr-3 cat-btns" onclick="enter_category(this, 'Other')">Other</button>
+
+
+                </div>
+
+                <p class="text-danger mt-4" id="category-error"></p>
+
+
+                <div class="my-5">
+                    
+                    <p class="my-3" style="color: grey; font-size:20px">You can write the text you want to proofread here &nbsp; <span class="badge bg-secondary text-white">Total words: <span id="word-count">0</span></span></p>
+                    <textarea class="my-1 p-3 form-control" name="textwritten" id="text-written" rows="10" placeholder="Start writing your text..." style="width: 100%; margin-right: 100px; border: solid 2px #cccccc; border-radius: 5px;"></textarea>
+                    <p class="text-danger mt-2" id="text-written-error"></p>
+                </div>
+
+                <h5 class="text-center">OR</h5>
+                
+                <div class="my-5">
+                  <p class="my-3" style="color: grey; font-size:20px">You can upload your file you want to proofread</p>
+                  <div class="my-1 p-5 text-center d-flex align-items-center justify-content-center dropzone" ondrop="now_drop(event)" id="dropzone" ondragover="allowdrop(event)" ondragleave="previous_state(event)" >
+                    Drag your file here or &nbsp;&nbsp; 
+                    <button type="button" class="btn btn-secondary" onclick="upload_file('target_file')">Upload file</button> 
+                    <br>
+                    <input type="file" id="target_file" name="targetfile" onchange="readURL(this, 'showing_div')" style="height: 0px; overflow:hidden; width: 0px;">
+
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <p class="text-success" id="success-msg" style="display: none;">Document has been attached!</p>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                          <a href="" style="text-decoration:none; display: none;" id="see_docs_file">
+                            <div style="text-align: right;" class="d-flex align-items-center float-right text-primary">
+
+                              <i class="material-icons" style="transform: rotate(45deg);">attach_file</i>
+                              <p class="m-0 p-0">&nbsp;your attached file</p>
+                            </div>
+
+                          </a>
+                          
+                    </div>
+                  </div>
+
+                  <p class="text-danger mt-4" id="file-error-msg"></p>
+
+                </div>
+
+                <div class="mt-5 mb-3">
+                  <p class="my-3" style="color: grey; font-size:20px">Leave a special note or request for the professionals.</p>
+                  <textarea class="my-1 p-3 form-control" name="custommsg" id="custom-msg" rows="3" placeholder="Write your special note here..." style="width: 100%; margin-right: 100px; border: solid 2px #cccccc; border-radius: 5px;"></textarea>
+
+                </div>
+
+                <button type="button" class="btn btn-orange px-4 mt-3" onclick="submit_work()">Submit</button>
+
+                <!-- <div class="row my-4">
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-outline-orange">Academic tests</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-outline-orange">Social media</button>
+                    </div>
+                    <div class="col-sm-3 bg-info">
+                        <button type="button" class="btn btn-outline-orange">Email / Letter</button>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-outline-orange">Academic tests</button>
+                    </div>
+                </div> -->
+              
+
+            </form>
+
+          </div>
+
+
+
+          <div class="col-lg-4 pt-5 pt-lg-0">
+            
+              <!-- Button trigger modal -->
+              <h2>How it works</h2>
+              <h5 class="my-3">only 3 easy steps to follow</h5>
+
+              <div>
+                <div class="icon-box my-4">
+                    <div class="icon">
+                      <img src="{% static 'assets/img/step_1.jpg' %}" class="step-icons-upload mt-2 mb-3" alt="">
+                      <!-- <i class="bx bxl-dribbble"></i> -->
+                    </div>
+                    <h5 class="title"><b>Submit your text</b></h5>
+                    <p class="description-upload">
+                        Simply fill the form besides this section and submit it to us.
+                    </p>
+                </div>
+
+                <div class="icon-box my-4">
+                    <div class="icon">
+                      <img src="{% static 'assets/img/step_2.jpg' %}" class="step-icons-upload mt-2 mb-3" alt="">
+                      <!-- <i class="bx bxl-dribbble"></i> -->
+                    </div>
+                    <h5 class="title"><b>Wait for your text</b></h5>
+                    <p class="description-upload">
+                        Please wait for a moment while our professionals proofreaders checking your text (or file).
+                    </p>
+                </div>
+
+                <div class="icon-box my-4">
+                    <div class="icon">
+                      <img src="{% static 'assets/img/step_3.jpg' %}" class="step-icons-upload mt-2 mb-3" alt="">
+                      <!-- <i class="bx bxl-dribbble"></i> -->
+                    </div>
+                    <h5 class="title"><b>Your text is ready</b></h5>
+                    <p class="description-upload">
+                      Your text has been analyzed, updated and ready to use.
+                    </p>
+                </div>
+              </div>
+              <div>
+                <!-- <embed src="" id="showing_div" type=""> -->
+                <iframe src="" id="showing_div" class="decrease-s-width" frameborder="0" style="border: solid 2px #eb5d1e; padding:10px; border-radius: 10px; width: 100%; height:100%; display: none;"></iframe>
+  
+              </div>
+
+             
+              
+             
+           
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- End About Section -->
+
+  </main>
+  <!-- End #main -->
+
+
+  {% include 'inc/footer.inc.html' %}
+
+  <a href="#" class="back-to-top" id="backtotop"><i class="icofont-simple-up"></i></a>
+
+  {% include 'inc/bottom.inc.html' %}
+
+
+</body>
+
+<script>
+  // (function(){
+  //       var dropzone = document.getElementById('dropzone');
+
+
+  //       dropzone.ondragover = function(){
+  //           $(this).addClass("dragover")
+  //           return false;
+  //       }
+
+  //       dropzone.ondragleave = function(){
+  //           $(this).removeClass("dragover");
+  //           return false;
+  //       }
+  // });
+
+  function allowdrop(event){
+      event.preventDefault();
+      var THIS = event.target;
+      $(THIS).addClass("dragover");
+      $("#showing_div").css("display", "none");
+
+  }
+
+  function now_drop(event){
+      event.preventDefault();
+      input = document.getElementById("target_file");
+      input.files = event.dataTransfer.files;
+      readURL(input, 'showing_div');
+
+  }
+
+  function previous_state(event){
+        var THIS = event.target;
+        $(THIS).removeClass("dragover");
+  }
+
+  var total_words_count = 0;
+
+  function count_words_of(string) {
+      var temp = 0;
+      var res_string = string.replaceAll("\n", " ");
+      console.log(string);
+      console.log(res_string);
+      var converting_in_array = res_string.split(" ");
+      for (let i = 0; i < converting_in_array.length; i++) {
+        const element = converting_in_array[i];
+        if (element != "" && element.length > 0) {
+          temp += 1; 
+        }
+        
+      }
+
+      $("#file-error-msg").text("");
+
+      return temp;
+  }
+
+
+  document.addEventListener('keyup', event => {
+      var text_as_string = $("#text-written").val();
+      
+      // if (text_as_string == "" || !text_as_string) {
+
+      //     total_words_count = 0;
+
+      // }else{
+
+      let conditions = (event.which == 13 || event.which == 188 || event.which == 190 || event.code == "Space" || event.which == 32 || event.code == "Backspace" || event.which == 8 || event.code == "Delete" || event.which == 46 || event.keyCode == 46 || event.key == "Delete");
+
+      if (conditions) {
+
+          console.log("Space or Backspace or Delete pressed");
+          total_words_count = count_words_of(text_as_string);
+      }
+
+      // }
+
+      $("#word-count").text(total_words_count);
+    
+  });
+
+  function enter_category(element, cat){
+    $("#category").val(cat);
+    $("#category-error").text("");
+    $( ".cat-btns" ).each( function () {
+        var btn = $(this);
+        btn.removeClass("btn-orange");
+        btn.addClass("btn-outline-orange");
+    });
+
+    $(element).removeClass("btn-outline-orange");
+    $(element).addClass("btn-orange");
+  }
+
+  function validation(){
+      var main_container = {}
+
+      var category      = $("#category").val();
+      var text_written  = $("#text-written").val();
+      var custom_msg    = $("#custom-msg").val();
+      var myfile        = $("#target_file").val();
+
+      if (category == "" || !category) {
+          $("#category-error").text("*Kindly select the type of your text!");
+          $("#backtotop").click();
+          return false;
+      }else{
+          main_container.category = category;
+          $("#category-error").text("");
+
+      }
+
+      if (custom_msg && custom_msg != "") {
+          main_container.custom_msg = custom_msg;
+      }
+
+      var A = (text_written && text_written != "");
+      var B = (myfile && myfile != "");
+
+      if ((A || B) && (!A || !B)) {
+          main_container.written_text = text_written;
+          console.log("go ahead and submit");
+      }else{
+          $("#file-error-msg").text("Kindly enter your text you want to proofread OR attach your text file (Not both)!");
+          return false;
+      }
+
+      $("#work-form").submit();
+      
+      // return main_container
+    
+  }
+
+
+  // submitting the work
+  function submit_work() {
+      
+      // validation 
+      var validate = validation();
+
+      if (validate) {
+
+          // send ajax request
+          console.log(validate);
+          // console.log(count_line_break(validate.written_text));
+      }
+  }
+
+  function count_line_break(string) {
+      var temp = string.split("\n");
+      return temp.length-1;
+
+  }
+
+  function upload_file(whick_input) {
+        $("#"+whick_input).click();
+    }
+
+    function readURL(input, show) {
+        $("#"+show).css('display', 'none');
+        nameFile = input.files[0].name.split(".");
+        nameFile = nameFile[nameFile.length-1];
+        
+        console.log(nameFile);
+        if(nameFile=="docx" || nameFile=="pdf" || nameFile=="txt" || nameFile=="doc"){
+            if (input.files && input.files[0]) {
+                $("#file-error-msg").text("");
+
+                var reader = new FileReader();
+
+                // if (nameFile == "docx") {
+                //     show = show+"_2";
+                // }
+    
+                reader.onload = function (e) {
+                    var result_to_show = e.target.result;
+                    console.log(result_to_show)
+                    if (nameFile=="docx" || nameFile=="doc") {
+                       $("#"+show).css('display', 'none');
+                       $("#see_docs_file").css("display", "");
+
+                    }else{
+                        $("#"+show).css('display', '');
+                        $("#see_docs_file").css("display", "none");
+                    }
+                    $("#"+show).prop("class", "decrease-s-width");
+                    $('#'+show)
+                        .attr('src', result_to_show)
+                        .width('97%')
+                        .height(500);
+
+                    $("#see_docs_file").prop("href", result_to_show);
+
+                };
+
+                if (!(nameFile == "docx" || nameFile == "doc")) {
+                    $("#see_docs_file").css('display', 'none');
+                    reader.readAsDataURL(input.files[0]);
+                }else{
+                    $("#see_docs_file").css('display', '');
+                    reader.readAsDataURL(input.files[0]);
+                }
+
+                $("#success-msg").css('display', '');
+    
+            }
+        }else{
+            $("#see_docs_file").css('display', 'none');
+            $("#success-msg").css('display', 'none');
+            $("#"+show).css('display', 'none');
+            // $("#target_file").load(location.href + " #target_file>*", "");
+            $("#target_file").val(null);
+            console.log("this is input");
+            console.log(input.files);
+            console.log("this is input");
+            // $("#");
+            alert("Invalid file type!");
+            $("showing_div").removeClass("dragover");
+
+        }
+        
+    }
+
+
+    
+ 
+</script>
+
+
+
+
+</html>
