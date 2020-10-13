@@ -2,6 +2,9 @@ from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User, auth
 import random
+import hashlib as hl
+import six, base64
+
 # Create your models here.
 
 class native_speaker(models.Model):
@@ -38,10 +41,17 @@ class order(models.Model):
     alloted_to = models.ForeignKey(native_speaker, on_delete = models.CASCADE)
     is_new = models.BooleanField(default = True)
     is_confirmed = models.BooleanField(default = True)
-    is_completed = models.BooleanField(default = False)
+
+    # -1 => CANCELLED
+    # 0 => IN PROGRESS
+    # 1 => DELIVERED
+    # 2 => ASK FOR REVISION
+    # 3 => COMPLETED
+    order_status =  models.CharField(max_length = 20, default = "IN-PROCESS")
+
 
     def select_random_speaker(self):
-        all_speakers = list(native_speaker.objects.all())
+        all_speakers = list(native_speaker.objects.filter(isAccepted = True))
         
         if len(all_speakers) > 0:
             return random.choice(all_speakers)
@@ -57,3 +67,49 @@ class order(models.Model):
                 self.is_confirmed = False
 
         super(order, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "ID = {},  Date = {},   Placed by = {},  alloted to = {}".format(self.id, self.order_date_time, self.placed_by, self.alloted_to)
+
+
+class allMsg(models.Model):
+    sender = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "sender_user")
+    receiver = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "receiver_user")
+    message = models.TextField()
+    moment = models.DateTimeField(default = datetime.now())
+
+    def generate_code(self):
+        strs = self.sender.username + self.receiver.username
+        print(strs)
+        code_hash = hl.md5(strs.encode())
+        return code_hash.hexdigest()
+
+    def encode(self, key, string):
+        encoded_chars = []
+        for i in range(len(string)):
+            key_c = key[i % len(key)]
+            encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
+            encoded_chars.append(encoded_c)
+        encoded_string = ''.join(encoded_chars)
+        encoded_string = encoded_string.encode('latin') if six.PY3 else encoded_string
+        return base64.urlsafe_b64encode(encoded_string).rstrip(b'=')
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            our_key = self.generate_code()
+            self.message = self.encode(our_key, self.message)
+            
+        super(allMsg, self).save(*args, **kwargs)
+
+
+class deliveries(models.Model):
+    revised_file = models.FileField(upload_to = 'delivery')
+    order = models.ForeignKey(order, on_delete = models.CASCADE)
+    order_date_time = models.DateTimeField(default = datetime.now())
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.order.order_status = "DELIVERED"
+            self.order.save()
+            
+        super(deliveries, self).save(*args, **kwargs)

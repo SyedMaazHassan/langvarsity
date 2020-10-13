@@ -44,7 +44,7 @@
                 <div class="form-row">
                   <div class="form-group col-md-12">
                     <label for="name">Enter your Email</label>
-                    <input type="email" name="email" value="{{email}}" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                    <input type="email" name="email" value="{{email}}" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" required />
                     <div class="validate"></div>
                   </div>
                   
@@ -52,8 +52,20 @@
                 <div class="form-group">
                   <label for="name">Enter password</label>
                   <input type="password" class="form-control" value="{{password}}" name="password" id="subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                  <div class="validate"></div>
+                    
+                  <div class="validate">
+                    
+                  </div>
+
+                  
                 </div>
+
+                <div class="custom-control custom-checkbox-green mb-3">
+                  <input type="checkbox" onclick="myFunction()" class="custom-control-input custom-control-input-green" style="border-radius: 100%;" id="ShowPass">
+                  <label class="custom-control-label" for="ShowPass">Show password</label>
+                </div>
+
+               
 
                 <p class="text-danger" id="error_msg">
                   {% for message in messages %}
@@ -93,5 +105,17 @@
   {% include 'inc/bottom.inc.html' %}
 
 </body>
+
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("subject");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
+</script>
 
 </html>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
+from django.db import connection
 from django.http import HttpResponse
 from django.http import JsonResponse
 import json
@@ -8,6 +9,8 @@ from datetime import datetime
 import random
 import os
 import docx
+import hashlib as hl
+import six, base64
 
 # main page function
 
@@ -203,6 +206,249 @@ def upload_work(request):
 
     return render(request, 'upload-work.html')
 
+# to deliver the work
+def deliverNow(request):
+    if request.method == 'POST':
+        orderID = request.POST['orderID']
+        deliveryFile = request.FILES['targetfile']
+
+        print("orderID =>", orderID)
+        print("deliveryFile =>", deliveryFile)
+
+        new_delivery = deliveries(
+            revised_file = deliveryFile,
+            order = order.objects.get(id = int(orderID))
+        )
+
+        new_delivery.save()
+
+        return redirect("profile")
+
+# complete or ask for revisio
+def make_it_as(request):
+    output = {}
+    if request.method == "GET":
+        if request.is_ajax():
+            task = int(request.GET['task'])
+            orderID = int(request.GET['orderID'])
+
+            print("task =>", task)
+            print("orderID =>", orderID)
+
+            if order.objects.filter(id = orderID).exists():
+                particular_order = order.objects.get(id = orderID)
+
+                if task == 1:
+                    particular_order.order_status = "COMPLETED"
+                else:
+                    particular_order.order_status = "IN-REVISION"
+
+                particular_order.save()
+
+                output['status'] = 1
+
+            # +1 for accept
+            # -1 for revision
+
+    return JsonResponse(output)
+
+
+def inbox(request, person_id):
+    if not request.user.is_authenticated:
+        return redirect("index")
+
+    print(person_id)
+    context = {}
+
+    if User.objects.filter(id = person_id).exists():
+        second_person = User.objects.get(id = person_id)
+
+        user1_isNative = native_speaker.objects.filter(which_user = request.user).exists()
+        user2_isNative = native_speaker.objects.filter(which_user = second_person).exists()
+
+        native = ""
+        non_native = ""
+
+        if user1_isNative:
+            native = native_speaker.objects.get(which_user = request.user)
+            non_native = second_person
+        elif user2_isNative:
+            native = native_speaker.objects.get(which_user = second_person)
+            non_native = request.user
+        else:
+            return redirect("index")
+
+        print(native.which_user.username)
+        print(non_native.username)
+
+        condition = order.objects.filter(placed_by = non_native, alloted_to = native).exists()
+
+        if condition:
+            context['second_person'] = second_person
+
+            cursor = connection.cursor()
+            cursor.execute('''
+            
+                SELECT * FROM application_allmsg
+                WHERE
+                    (sender_id = {} AND receiver_id = {})
+                OR
+                    (sender_id = {} AND receiver_id = {})
+                ORDER BY 
+                    id;
+            
+            '''.format(native.which_user.id, non_native.id, non_native.id, native.which_user.id))
+
+            all_msgs = cursor.fetchall()
+
+            for i in range(len(all_msgs)):
+                all_msgs[i] = list(all_msgs[i])
+                sender = User.objects.get(id = all_msgs[i][4])
+                receiver = User.objects.get(id = all_msgs[i][3])
+                all_msgs[i][1] = decode(generate_code(sender, receiver), all_msgs[i][1])
+
+            context['all_msgs'] = all_msgs
+            return render(request, "inbox.html", context)
+
+    return redirect("index")
+
+
+def generate_code(sender, receiver):
+    strs = sender.username + receiver.username
+    code_hash = hl.md5(strs.encode())
+    return code_hash.hexdigest()
+
+def decode(key, string):
+    string = string[2:-1]
+    string = base64.urlsafe_b64decode(bytes(string.encode()) + bytes("===".encode()))
+    string = string.decode('latin') if six.PY3 else string
+    encoded_chars = []
+    for i in range(len(string)):
+        key_c = key[i % len(key)]
+        encoded_c = chr((ord(string[i]) - ord(key_c) + 256) % 256)
+        encoded_chars.append(encoded_c)
+    encoded_string = ''.join(encoded_chars)
+    return encoded_string
+
+def sendMsg(request):
+    output = {}
+    if request.method == "GET" and request.is_ajax():
+        to = int(request.GET['to'])
+        try:
+            to = User.objects.get(id = to)
+        except:
+            output['status'] = False
+            return JsonResponse(output)
+
+        msg = request.GET['msg']
+
+        print("to =>", to.first_name)
+        print("msg =>", msg)
+
+        new_msg = allMsg(
+            sender = request.user,
+            receiver = to,
+            message = msg
+        )
+
+        new_msg.save()
+
+        output['status'] = True
+
+        return JsonResponse(output)
+
+def getMsgs(request):
+    output = {}
+    if request.user.is_authenticated:
+        if request.method == "GET" and request.is_ajax():
+            msg_present = int(request.GET['msg_present'])
+            to = int(request.GET['to'])
+            try:
+                receiver = User.objects.get(id = to)
+                sender = request.user
+
+                # everyting is fine, write your valid code here.
+                cursor = connection.cursor()
+                cursor.execute('''
+                
+                    SELECT * FROM application_allmsg
+                    WHERE
+                        (sender_id = {} AND receiver_id = {})
+                    OR
+                        (sender_id = {} AND receiver_id = {})
+                    ORDER BY 
+                        id;
+                
+                '''.format(sender.id, receiver.id, receiver.id, sender.id))
+
+                all_msgs = cursor.fetchall()
+
+                all_msgs = all_msgs[msg_present:]
+
+                for i in range(len(all_msgs)):
+                    all_msgs[i] = list(all_msgs[i])
+                    sender = User.objects.get(id = all_msgs[i][4])
+                    receiver = User.objects.get(id = all_msgs[i][3])
+                    all_msgs[i][1] = decode(generate_code(sender, receiver), all_msgs[i][1])
+
+                
+                output['all_msgs'] = all_msgs
+                output['status'] = True
+                return JsonResponse(output)
+                # return GOOD
+
+            except:
+                output['status'] = False
+                return JsonResponse(output)
+
+
+    else:
+        output['status'] = False
+        return JsonResponse(output)
+
+# get all deliveries
+def getDeliveries(request):
+    output = {}
+    if request.method == "GET":
+        if request.is_ajax():
+            order_id = request.GET['order_id']
+            print(order_id)
+            output['order_id'] = order_id
+
+            particular_order = order.objects.get(id = int(order_id))
+
+            output['isCompleted'] = (particular_order.order_status == "COMPLETED")
+
+            all_deliveries_container = []
+            
+            # Solution 1 starts
+            
+            cursor = connection.cursor()
+            cursor.execute('''
+            
+                SELECT revised_file, order_date_time 
+                FROM application_deliveries 
+                WHERE order_id={}
+
+                '''.format(int(order_id)))
+
+            data = cursor.fetchall()
+            print(data)
+
+            # solution 1 ends
+
+            # to get meaningfull datetime
+
+            for i in data:
+                print(i)
+                myFile = i[0]
+                actual_date = i[1].strftime("%d %b, %Y - %H:%M %p")
+                all_deliveries_container.append((myFile, actual_date))
+
+            output['all_deliveries'] = all_deliveries_container
+
+    return JsonResponse(output)
+
 # main page
 def profile(request):
     if not request.user.is_authenticated:
@@ -214,13 +460,19 @@ def profile(request):
 
     if native_speaker.objects.filter(which_user = request.user).exists():
         if native_speaker.objects.get(which_user = request.user).isAccepted:
-            context['status'] = "You are now a native speaker"
+            context['status'] = "You are a native speaker"
+            context['AS'] = 'SPEAKER'
+            itsNativeSpeaker = native_speaker.objects.get(which_user = request.user)
+
+            if order.objects.filter(alloted_to = itsNativeSpeaker).exists():
+                context['orders'] = order.objects.filter(alloted_to = itsNativeSpeaker).order_by("-id")
+                
         else:
             context['status'] = "Native speaker request has been sent"
-
-
-    if order.objects.filter(placed_by = request.user).exists():
-        context['orders'] = order.objects.filter(placed_by = request.user).order_by("-id")
+    else:
+        context['AS'] = 'USER'
+        if order.objects.filter(placed_by = request.user).exists():
+            context['orders'] = order.objects.filter(placed_by = request.user).order_by("-id")
 
     # print(date_joined)
 

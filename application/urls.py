@@ -13,7 +13,13 @@ urlpatterns = [
     path('becomenative', views.becomenative, name="becomenative"),
     path('documents', views.documents, name="documents"),
     path('upload-work', views.upload_work, name="upload-work"),
-    path('submitwork', views.submitwork, name="submitwork")
+    path('submitwork', views.submitwork, name="submitwork"),
+    path('deliverNow', views.deliverNow, name="deliverNow"),
+    path("getDeliveries", views.getDeliveries, name="getDeliveries"),
+    path("make_it_as", views.make_it_as, name="make_it_as"),
+    path("inbox/<person_id>", views.inbox, name="inbox"),
+    path("sendMsg", views.sendMsg, name="sendMsg"),
+    path("getMsgs", views.getMsgs, name="getMsgs")
 ]
 
 urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

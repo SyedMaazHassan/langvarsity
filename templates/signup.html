@@ -72,21 +72,27 @@
                   
                 </div>
 
-
-
-          
-
-                <div class="form-group">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
                     <label for="name">Enter Password</label>
                     <input type="password" class="form-control" name="pass1" value="{{pass1}}" id="p1" data-rule="minlen:4" data-msg="Please enter at least 8 chars of password" required/>
                     <div class="validate"></div>
-                </div>
+                  </div>
 
-                <div class="form-group">
+                  <div class="form-group col-md-6">
                     <label for="name">Confirm Password</label>
                     <input type="password" class="form-control" name="pass2" id="p2" value="{{pass2}}" data-rule="minlen:4" data-msg="Please enter at least 8 chars of password" required />
                     <div class="validate"></div>
+                  </div>
+
                 </div>
+
+                <div class="custom-control custom-checkbox-green mb-3">
+                  <input type="checkbox" onclick="myFunction()" class="custom-control-input custom-control-input-green" style="border-radius: 100%;" id="ShowPass">
+                  <label class="custom-control-label" for="ShowPass">Show password</label>
+                </div>
+
+                <hr>
 
                 <div class="custom-control custom-checkbox-green mb-3">
                   <input type="checkbox" class="custom-control-input custom-control-input-green" style="border-radius: 100%;" id="customCheck">
@@ -127,6 +133,24 @@
   {% include 'inc/bottom.inc.html' %}
 
   <script>
+    function myFunction() {
+      var p1 = document.getElementById("p1");
+      var p2 = document.getElementById("p2");
+
+      if (p1.type === "password") {
+
+        p1.type = "text";
+        p2.type = "text";
+
+      } else {
+
+        p1.type = "password";
+        p2.type = "password";
+        
+      }
+    }
+
+
     var error_msg = "{{border}}";
 
     if (error_msg != "") {
